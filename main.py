@@ -16,16 +16,12 @@ def create_file_path(path, file_name):
 
 
 def create_dataset(input_path, images_path, dataset_path):
-    count = 0
     for path, dirs, files in os.walk(input_path):
         for file_name in files:
             file_path = create_file_path(path, file_name)
             file = open(file_path, 'r')
 
             emotion_number = int(float(file.read()))
-            if (emotion_number==0):
-                count+=1
-                print(file_name)
             image = cv2.imread(create_input_image_path(images_path, input_path, file_path))
 
             templates = get_emotion_templates(image)
@@ -33,8 +29,6 @@ def create_dataset(input_path, images_path, dataset_path):
                 output_path = create_output_path(dataset_path, emotion_number, i, file_name)
                 cv2.imwrite(output_path, template[0])
             file.close()
-
-    print(count)
 
 
 def main():

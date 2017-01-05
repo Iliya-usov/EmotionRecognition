@@ -56,8 +56,8 @@ def parts_of_face(pose_landmarks, image):
     
         edging_x = int((max_x - min_x)*x_coef)
         edging_y = int((max_y - min_y)*y_coef)
-    
-        max_x = max_x + edging_x
+
+        max_x += edging_x
         if max_x > rows: max_x = rows
         max_y = max_y + edging_y
         if max_y > cols: max_y = cols

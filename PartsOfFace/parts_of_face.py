@@ -76,6 +76,7 @@ def parts_of_face(pose_landmarks, image):
         if vector[0] > 0:
             ungle = -ungle + 90
         matrix = cv2.getRotationMatrix2D(center, ungle, 1)
+        cv2.getr
         return cv2.warpAffine(image, matrix, (cols, rows))
 
     max_x, max_y, min_x, min_y = bound_lines(left_eye, 2.6, 0.7)

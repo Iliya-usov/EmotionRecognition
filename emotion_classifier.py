@@ -14,7 +14,7 @@ def get_roi_of_faces(image):
         center = get_center_between_eyes(landmarks_pos)
         rotation_matrix = get_rotation_matrix(center, landmarks_pos)
         rotation_image = get_rotation_image(image, rotation_matrix)
-        rotation_landmarks_pos = get_rotation_landmarks_pos(landmarks_pos, center, rotation_matrix)
+        rotation_landmarks_pos = get_rotation_points(landmarks_pos, center, rotation_matrix)
         roi = get_roi(rotation_image,rotation_landmarks_pos)
         roi_of_faces.append((roi, face_rect))
     return roi_of_faces
@@ -64,7 +64,7 @@ def get_angle(left_point, right_point):
     return angle if vector[0] <= 0 else 90 - angle
 
 
-def get_rotation_landmarks_pos(points, center, rotation_matrix):
+def get_rotation_points(points, center, rotation_matrix):
     new_points = list(map(
         lambda x:
         (x[0] - center[0], x[1] - center[1], 0),

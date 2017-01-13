@@ -1,5 +1,14 @@
 import cv2
 
+def get_edges(images):
+    result = []
+    for image in images:
+        median = cv2.medianBlur(image,5)
+        clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(4,4))
+        equalized = clahe.apply(median)
+        edges = cv2.Canny(equalized,100,200)
+        result.append(edges)
+    return result
 
 def get_gray_image(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)

@@ -16,3 +16,8 @@ def histogram_equalization(image):
 def binarization(image, thresh):
     dummy, image = cv2.threshold(image, thresh, 255, cv2.THRESH_BINARY)
     return image
+
+
+def get_rotation_image(image, rotation_matrix):
+    height, width = image.shape[:2]
+    return cv2.warpAffine(image, rotation_matrix, (width, height))

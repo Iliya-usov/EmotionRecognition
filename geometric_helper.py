@@ -27,3 +27,7 @@ def get_rotation_points(points, center, rotation_matrix):
         ((matrix * (np.matrix(x)).T).T + np.matrix(center)).tolist(),
         new_points))
     return list(map(lambda x: (int(x[0][0]), int(x[0][1])), rotation_points))
+
+
+def get_rotation_matrix(center, angle, scale):
+    return cv2.getRotationMatrix2D(center, angle, scale)

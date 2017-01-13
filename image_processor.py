@@ -21,3 +21,16 @@ def binarization(image, thresh):
 def get_rotation_image(image, rotation_matrix):
     height, width = image.shape[:2]
     return cv2.warpAffine(image, rotation_matrix, (width, height))
+
+
+
+
+
+def get_rectangle(image, points, edging=10):
+    height, width = image.shape[:2]
+    min_x = max(min(list(map(lambda x: x[0], points))) - edging, 0)
+    min_y = max(min(list(map(lambda x: x[1], points))) - edging, 0)
+    max_x = min(max(list(map(lambda x: x[0], points))) + edging, width)
+    max_y = min(max(list(map(lambda x: x[1], points))) + edging, height)
+
+    return image[min_y:max_y, min_x:max_x]

@@ -53,7 +53,7 @@ def main():
 
 
 def t():
-    image = cv2.imread("/home/ilya/Projects/PythonProjects/EmotionRecognition/Dataset/1/Face_17/Face.png")
+    image = cv2.imread("/home/ilya/Загрузки/f.png")
 
     image = histogram_equalization(image)
     image = get_gray_image(image)
@@ -72,7 +72,7 @@ def t():
 
             img = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
 
-            img = binarization(img,60)
+            img = binarization(img, 70)
             cv2.imshow("roi{}".format(i), img)
 
     cv2.waitKey(0)

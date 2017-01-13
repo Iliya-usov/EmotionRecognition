@@ -1,14 +1,13 @@
 import cv2
 
+
 def get_edges(images):
     result = []
     for image in images:
-        median = cv2.medianBlur(image,5)
-        clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(4,4))
-        equalized = clahe.apply(median)
-        edges = cv2.Canny(equalized,100,200)
+        edges = cv2.Canny(image, 100, 200)
         result.append(edges)
     return result
+
 
 def get_gray_image(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
@@ -22,6 +21,11 @@ def histogram_equalization(image):
     return cv2.cvtColor(image, cv2.COLOR_YCrCb2BGR)
 
 
+def CLAHE(image, clipLimit=1.0, tileGridSize=(4, 4)):
+    clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(4, 4))
+    return clahe.apply(image)
+
+
 def binarization(image, thresh):
     dummy, image = cv2.threshold(image, thresh, 255, cv2.THRESH_BINARY)
     return image
@@ -30,9 +34,6 @@ def binarization(image, thresh):
 def get_rotation_image(image, rotation_matrix):
     height, width = image.shape[:2]
     return cv2.warpAffine(image, rotation_matrix, (width, height))
-
-
-
 
 
 def get_rectangle(image, points, edging=10):

@@ -1,6 +1,14 @@
 import cv2
 
 
+def get_edges(images):
+    result = []
+    for image in images:
+        edges = cv2.Canny(image, 100, 200)
+        result.append(edges)
+    return result
+
+
 def get_gray_image(image):
     return cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -11,6 +19,11 @@ def histogram_equalization(image):
     cv2.equalizeHist(channels[0], channels[0])
     cv2.merge(channels, image)
     return cv2.cvtColor(image, cv2.COLOR_YCrCb2BGR)
+
+
+def CLAHE(image, clipLimit=1.0, tileGridSize=(4, 4)):
+    clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(4, 4))
+    return clahe.apply(image)
 
 
 def binarization(image, thresh):

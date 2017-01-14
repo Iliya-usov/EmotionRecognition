@@ -5,7 +5,6 @@ from image_processor import *
 from  geometric_helper import *
 from feature_detector import *
 
-
 def create_output_path(dataset_path, emotion_number, index, file_name):
     return "{}/{}/{}_{}.png".format(dataset_path, str(emotion_number), file_name[0:len(file_name) - 4], index)
 
@@ -40,9 +39,11 @@ def create_train_set(dataset_path):
     f = []
     for path, dirs, files in os.walk(dataset_path):
         for file_name in files:
-            num = path[len(path)-1:]
+            num = int(path[len(dataset_path)])
+            if num >7:
+                print("ad;lkfsjf;ldhf suka")
             image = cv2.imread(path + "/" +file_name)
-            res = [int(num)]
+            res = [num]
             res += (list(get_features_from_image(image, get_linear_and_eccentricity_features)[0][0]))
             f.append(res)
     np.savetxt(dataset_path + "dataset.csv", f, delimiter=',', fmt='%f')

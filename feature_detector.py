@@ -24,8 +24,8 @@ def get_linear_and_eccentricity_features_from_face(image, face_rect):
 
 
 def preprocess_image(image):
-    image = CLAHE(image)
-    return get_gray_image(image)
+    image = get_gray_image(image)
+    return CLAHE(image)
 
 
 def get_landmarks_and_positions_from_image(image):
@@ -107,7 +107,7 @@ def get_linear_and_eccentricity_features(landmarks):
 
 def eccentricity_on_points(left_point, right_point, middle_point):
     a = distance_between_numbers(get_x(right_point), get_x(left_point)) / 2
-    b = distance_between_numbers(get_y(left_point) - get_y(middle_point))
+    b = distance_between_numbers(get_y(left_point), get_y(middle_point))
 
     return eccentricity(a, b)
 

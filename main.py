@@ -3,6 +3,7 @@ import os
 from emotion_classifier import *
 from image_processor import *
 from  geometric_helper import *
+from feature_detector import *
 
 
 def create_output_path(dataset_path, emotion_number, index, file_name):
@@ -82,4 +83,7 @@ def t():
 
 
 if __name__ == "__main__":
-    print(distance((0, 3), (4, 0)))
+    image = cv2.imread("/home/ilya/Загрузки/f.png")
+
+    res = get_features_from_image(image, get_linear_and_eccentricity_features)
+    print(res)

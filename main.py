@@ -2,8 +2,11 @@ import cv2
 import os
 from emotion_classifier import *
 from image_processor import *
-from  geometric_helper import *
+from geometric_helper import *
 from feature_detector import *
+from sklearn.ensemble import RandomForestClassifier
+from numpy import savetxt, loadtxt
+import pickle
 
 def create_output_path(dataset_path, emotion_number, index, file_name):
     return "{}/{}/{}_{}.png".format(dataset_path, str(emotion_number), file_name[0:len(file_name) - 4], index)
@@ -48,12 +51,25 @@ def create_train_set(dataset_path):
             f.append(res)
     np.savetxt(dataset_path + "dataset.csv", f, delimiter=',', fmt='%f')
 
-def main():
-    # input_path = "/home/ilya/Загрузки/Emotion/"
-    # images_path = "/home/ilya/Загрузки/cohn-kanade-images/"
-    dataset_path = "/home/ilya/Projects/PythonProjects/EmotionRecognition/Dataset/"
-    create_train_set(dataset_path)
+def create_classifier():
+    dataset_path = "/home/alexander/GitHib/EmotionRecognition/Dataset/dataset.csv"
+    dataset = loadtxt(open('Dataset/dataset.csv'), dtype='f8', delimiter=',')
+    clf = RandomForestClassifier(n_estimators = 1000, n_jobs = 4)
+    target = [x[0] for x in dataset]
+    train = [x[1:] for x in dataset]
+    clf.fit(train, target)
+    with open('classifier.pkl', 'wb') as f:
+        pickle.dump(clf, f)
+    f.close()
 
+def main():
+    image = cv2.imread("/home/alexander/GitHib/EmotionRecognition/Dataset/7/Face_5/Face.png")
+    res = list(get_features_from_image(image, get_linear_and_eccentricity_features)[0][0])
+    with open('classifier.pkl', 'rb') as f:
+        clf = pickle.load(f)
+    f.close()
+    result = clf.predict_proba([res])
+    print(result)
 
 if __name__ == "__main__":
     main()

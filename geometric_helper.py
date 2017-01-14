@@ -30,7 +30,7 @@ def get_rotation_points(points, center, rotation_matrix):
     return list(map(lambda x: (int(x[0][0]), int(x[0][1])), rotation_points))
 
 
-def get_rotation_matrix(center, angle, scale):
+def get_rotation_matrix(center, angle, scale=1):
     return cv2.getRotationMatrix2D(center, angle, scale)
 
 

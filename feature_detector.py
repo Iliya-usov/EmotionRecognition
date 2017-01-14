@@ -1,10 +1,51 @@
 # show http://www.portointeractivecenter.org/site/wp-content/uploads/Real-Time-Emotion-Recognition_a-Novel-Method-for-Geometrical-Facial-Features-Extraction1.pdf
 
-from geometric_helper import distance_between_numbers, eccentricity
+from geometric_helper import *
+from image_processor import *
+import openface
+
+predictor_model = "shape_predictor_68_face_landmarks.dat"
+face_aligner = openface.AlignDlib(predictor_model)
 
 
-def get__linear_and_eccentricity_features_from_image(image):
-    pass
+def get_features_from_image(image, get_features):
+    features = []
+    landmarks_of_faces = get_landmarks_and_positions_from_image(image)
+    for landmarks, face_rect in landmarks_of_faces:
+        feature = get_features(landmarks)
+        features.append((feature, face_rect))
+
+    return features
+
+
+def get_linear_and_eccentricity_features_from_face(image, face_rect):
+    landmarks = get_rotation_landmarks_from_face(image, face_rect)
+    return get_linear_and_eccentricity_features(landmarks)
+
+
+def preprocess_image(image):
+    image = CLAHE(image)
+    return get_gray_image(image)
+
+
+def get_landmarks_and_positions_from_image(image):
+    image = preprocess_image(image)
+    landmarks_of_faces = []
+    detected_faces = face_aligner.getAllFaceBoundingBoxes(image)
+    for face_rect in detected_faces:
+        landmarks = get_rotation_landmarks_from_face(image, face_rect)
+        landmarks_of_faces.append((landmarks, face_rect))
+
+    return landmarks_of_faces
+
+
+def get_rotation_landmarks_from_face(image, face_rect):
+    landmarks = face_aligner.findLandmarks(image, face_rect)
+    center = get_center_between_eyes(landmarks)
+    angle = get_rotation_angle(landmarks)
+    rotation_matrix = get_rotation_matrix(center, angle)
+    return get_rotation_points(landmarks, center, rotation_matrix)
+
 
 # S1
 def get_linear_features(landmarks):
@@ -153,3 +194,11 @@ def B_M(landmarks):
 
 def D_m2(landmarks):
     return landmarks[57]
+
+
+def get_rotation_angle(landmarks_pos):
+    return get_angle(landmarks_pos[36], landmarks_pos[45])
+
+
+def get_center_between_eyes(landmarks_pos):
+    return get_center(landmarks_pos[36], landmarks_pos[45])

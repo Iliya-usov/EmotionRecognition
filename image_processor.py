@@ -22,7 +22,7 @@ def histogram_equalization(image):
 
 
 def CLAHE(image, clipLimit=1.0, tileGridSize=(4, 4)):
-    clahe = cv2.createCLAHE(clipLimit=1.0, tileGridSize=(4, 4))
+    clahe = cv2.createCLAHE(clipLimit=clipLimit, tileGridSize=tileGridSize)
     return clahe.apply(image)
 
 

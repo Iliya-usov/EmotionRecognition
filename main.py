@@ -2,6 +2,8 @@ import cv2
 import os
 from emotion_classifier import *
 from image_processor import *
+from  geometric_helper import *
+
 
 def create_output_path(dataset_path, emotion_number, index, file_name):
     return "{}/{}/{}_{}.png".format(dataset_path, str(emotion_number), file_name[0:len(file_name) - 4], index)
@@ -44,9 +46,9 @@ def main():
     gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     result = get_roi_of_faces(gray_image)
     for im in result:
-        h,w = im[0][2].shape
+        h, w = im[0][2].shape
         gradX = cv2.Canny(im[0][0
-                          ],50,100)
+                          ], 50, 100)
         cv2.imshow("s", gradX)
         cv2.waitKey(0)
         cv2.destroyAllWindows()
@@ -78,5 +80,6 @@ def t():
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+
 if __name__ == "__main__":
-    t()
+    print(distance((0, 3), (4, 0)))

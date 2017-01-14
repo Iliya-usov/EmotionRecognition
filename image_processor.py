@@ -23,9 +23,6 @@ def get_rotation_image(image, rotation_matrix):
     return cv2.warpAffine(image, rotation_matrix, (width, height))
 
 
-
-
-
 def get_rectangle(image, points, edging=10):
     height, width = image.shape[:2]
     min_x = max(min(list(map(lambda x: x[0], points))) - edging, 0)

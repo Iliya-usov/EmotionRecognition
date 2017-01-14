@@ -35,55 +35,24 @@ def create_dataset(input_path, images_path, dataset_path):
             file.close()
 
 
+
+def create_train_set(dataset_path):
+    f = []
+    for path, dirs, files in os.walk(dataset_path):
+        for file_name in files:
+            num = path[len(path)-1:]
+            image = cv2.imread(path + "/" +file_name)
+            res = [int(num)]
+            res += (list(get_features_from_image(image, get_linear_and_eccentricity_features)[0][0]))
+            f.append(res)
+    np.savetxt(dataset_path + "dataset.csv", f, delimiter=',', fmt='%f')
+
 def main():
     # input_path = "/home/ilya/Загрузки/Emotion/"
     # images_path = "/home/ilya/Загрузки/cohn-kanade-images/"
-    # dataset_path = "/home/ilya/Projects/PythonProjects/EmotionRecognition/Dataset/"
-    # create_dataset(input_path, images_path, dataset_path)
-
-    image = cv2.imread("/home/ilya/Загрузки/f.png")
-
-    image = histogram_equalization(image)
-    gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    result = get_roi_of_faces(gray_image)
-    for im in result:
-        h, w = im[0][2].shape
-        gradX = cv2.Canny(im[0][0
-                          ], 50, 100)
-        cv2.imshow("s", gradX)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
-
-
-def t():
-    image = cv2.imread("/home/ilya/Загрузки/f.png")
-
-    image = histogram_equalization(image)
-    image = get_gray_image(image)
-    res = get_roi_of_faces(image)
-    scale = 1
-    delta = 0
-    ddepth = cv2.CV_64F
-    for im in res:
-        for i, roi in enumerate(im[0]):
-            img = roi
-            grad_x = cv2.Sobel(img, ddepth, 1, 0, ksize=3, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
-            grad_y = cv2.Sobel(img, ddepth, 0, 1, ksize=3, scale=scale, delta=delta, borderType=cv2.BORDER_DEFAULT)
-
-            abs_grad_x = cv2.convertScaleAbs(grad_x)
-            abs_grad_y = cv2.convertScaleAbs(grad_y)
-
-            img = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
-
-            img = binarization(img, 70)
-            cv2.imshow("roi{}".format(i), img)
-
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    dataset_path = "/home/ilya/Projects/PythonProjects/EmotionRecognition/Dataset/"
+    create_train_set(dataset_path)
 
 
 if __name__ == "__main__":
-    image = cv2.imread("/home/ilya/Загрузки/f.png")
-
-    res = get_features_from_image(image, get_linear_and_eccentricity_features)
-    print(res)
+    main()
